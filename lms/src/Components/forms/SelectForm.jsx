@@ -1,36 +1,40 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import * as React from "react";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
-export default function SelectForm({label, options}) {
-  const [age, setAge] = React.useState('');
-
+export default function SelectForm({
+  label,
+  options = [],
+  value,
+  onChange,
+}) {
   const handleChange = (event) => {
-    setAge(event.target.value);
+    onChange(event.target.value);
   };
 
   return (
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">{label}</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={label}
-          label={label}
-          onChange={handleChange}
-        >
-          {
-            options.map((option) => {
-              return <MenuItem value={option.id}>{option.name}</MenuItem>
+    <FormControl fullWidth>
+      <InputLabel id={`${label}-select-label`}>
+        {label}
+      </InputLabel>
 
-
-            })
-          }
-          
-        </Select>
-      </FormControl>
+      <Select
+        labelId={`${label}-select-label`}
+        value={value || ""}
+        label={label}
+        onChange={handleChange}
+      >
+        {options.map((option) => (
+          <MenuItem
+            key={option.id}
+            value={option.id}
+          >
+            {option.role || option.gender || option.programme || option.name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
-};
+}

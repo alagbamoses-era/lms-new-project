@@ -1,0 +1,1 @@
+default_app_config = 'core.lms_app.apps.LmsAppConfig'

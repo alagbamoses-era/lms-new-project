@@ -7,16 +7,16 @@ nav {
     align-items: center;
     padding: 20px 80px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
-#navbar {
+.navbar {
     display: flex;
     align-items: center;
     justify-content: center;
 
 }
-
-#navbar li {
+.navbar li {
     list-style: none;
     margin: 0 15px;
     padding: 0 20px;
@@ -26,7 +26,7 @@ nav {
     position: relative;
 }
 
-#navbar li a{
+.navbar li a{
     text-decoration: none;
     font-size: 1.3rem;
     font-weight: bold;

@@ -1,102 +1,192 @@
-import { useState, useEffect } from 'react';
-import AxiosInstance from '../Components/Axios';
-import Box from '@mui/material/Box';
-import '../css/Create.css';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import Topography from '@mui/material/Typography';
-import TextForm from '../Components/forms/TextForm';
-import SelectForm from '../Components/forms/SelectForm';
+import { useState, useEffect } from "react";
+import AxiosInstance from "../Components/Axios";
+import Box from "@mui/material/Box";
+import "../css/Create.css";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import Typography from "@mui/material/Typography";
+import TextForm from "../Components/forms/TextForm";
+import SelectForm from "../Components/forms/SelectForm";
+import Button from "@mui/material/Button";
+import store from "../store/index";
 
-
-const Create = () =>  {
+const Create = () => {
   const [users, setUsers] = useState([]);
-  const [courses, setCourses] = useState([]);
   const [roles, setRoles] = useState([]);
   const [genders, setGenders] = useState([]);
   const [programmes, setProgrammes] = useState([]);
 
-  console.log(users);
-  console.log(courses);
-  console.log(roles);
-  console.log(genders);
-  console.log(programmes);
-
-  const getData = () => {
-
-  AxiosInstance.get('users/').then((response) => {
-    setUsers(response.data);    
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    role: "",
+    gender: "",
+    programme: "",
   });
 
-  AxiosInstance.get('courses/').then((response) => {
-    setCourses(response.data);    
-  }); 
+  const getData = async () => {
+    try {
+      const usersResponse = await AxiosInstance.get("users/");
+      setUsers(usersResponse.data);
 
-  AxiosInstance.get('roles/').then((response) => {
-    setRoles(response.data);    
-  });
+      const rolesResponse = await AxiosInstance.get("roles/");
+      setRoles(rolesResponse.data);
 
-  AxiosInstance.get('genders/').then((response) => {
-    setGenders(response.data);    
-  });
+      const gendersResponse = await AxiosInstance.get("genders/");
+      setGenders(gendersResponse.data);
 
-  AxiosInstance.get('programmes/').then((response) => {
-    setProgrammes(response.data);    
-  });     
+      const programmesResponse = await AxiosInstance.get("programmes/");
+      setProgrammes(programmesResponse.data);
 
- 
-}
 
- useEffect(() => {
+    } catch (error) {
+      console.error("Error loading data:", error);
+    }
+  };
+
+  useEffect(() => {
     getData();
   }, []);
+
+  const handleChange = (field, value) => {
+    setFormData({
+      ...formData,
+      [field]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await AxiosInstance.post("users/", {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+      });
+      
+
+      setUsers([...users, response.data]);
+
+      setFormData({
+        username: "",
+        email: "",
+        password: "",
+        role: "",
+        gender: "",
+        programme: "",
+      });
+
+      alert("User created successfully!");
+
+    } catch (error) {
+      console.error("Create user failed:", error.response?.data || error.message);
+      alert("Unable to create user.");
+    }
+  };
+  
 
   return (
     <div>
       <Box className="TopBar">
         <AddBoxIcon />
-        <Topography  sx={{ marginLeft: '15px', fontWeight: 'bold', variant: 'subtitle1' }}>
+
+        <Typography sx={{ marginLeft: "15px", fontWeight: "bold" }}>
           <h1>Create New Users</h1>
-          </Topography>
+        </Typography>
       </Box>
-       <Box className= 'FormBox'>
-          <Box className='FormArea'>
-            <TextForm label= {"Name"} />
-            
+
+      <form onSubmit={handleSubmit}>
+        <Box className="FormBox">
+
+          <Box className="FormArea">
+            <TextForm
+              label="Name"
+              value={formData.username}
+              onChange={(e) =>
+                handleChange("username", e.target.value)
+              }
+            />
           </Box>
 
-          <Box className='FormArea'>
-            <TextForm label= {"Email"} /> 
+          <Box className="FormArea">
+            <TextForm
+              label="Email"
+              value={formData.email}
+              onChange={(e) =>
+                handleChange("email", e.target.value)
+              }
+            />
           </Box>
 
-          <Box className='FormArea'>
-            <TextForm label= {"Password"} /> 
-          </Box>  
+          <Box className="FormArea">
+            <TextForm
+              label="Password"
+              type="password"
+              value={formData.password}
+              onChange={(e) =>
+                handleChange("password", e.target.value)
+              }
+            />
+          </Box>
 
-          <Box className='FormArea'>
-            <SelectForm label={"Role"}
+          <Box className="FormArea">
+           <SelectForm
+              label="Role"
               options={roles}
+              value={formData.role}
+              onChange={(value) =>
+                setFormData({
+                  ...formData,
+                  role: value,
+                })
+              }
             />
           </Box>
 
-           <Box className='FormArea'>
-            <SelectForm label={"Gender"}
+          <Box className="FormArea">
+           <SelectForm
+              label="Gender"
               options={genders}
+              value={formData.gender}
+              onChange={(value) =>
+                setFormData({
+                  ...formData,
+                  gender: value,
+                })
+              }
             />
           </Box>
 
-           <Box className='FormArea'>
-            <SelectForm label={"Programme"}
-              options={programmes}
-            />
+          <Box className="FormArea">
+            <SelectForm
+                label="Programme"
+                options={programmes}
+                value={formData.programme}
+                onChange={(value) =>
+                  setFormData({
+                    ...formData,
+                    programme: value,
+                  })
+                }
+              />
           </Box>
 
-          
+          <Box className="FormArea">
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
+              Create User
+            </Button>
+           
+          </Box>
 
-        
-       </Box>
+        </Box>
+      </form>
     </div>
-  )
-}
-
+  );
+};
 
 export default Create;
