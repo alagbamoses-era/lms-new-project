@@ -26,9 +26,7 @@ const Create = () => {
 
   const getData = async () => {
     try {
-      const usersResponse = await AxiosInstance.get("users/");
-      setUsers(usersResponse.data);
-
+      
       const rolesResponse = await AxiosInstance.get("roles/");
       setRoles(rolesResponse.data);
 
@@ -63,6 +61,9 @@ const Create = () => {
         username: formData.username,
         email: formData.email,
         password: formData.password,
+        role: formData.role,
+        gender: formData.gender,
+        programme: formData.programme,
       });
       
 

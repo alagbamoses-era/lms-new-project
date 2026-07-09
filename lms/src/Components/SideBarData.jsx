@@ -6,6 +6,7 @@ import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import Courses from '../Pages/Courses';
 
 
 const admin = true;

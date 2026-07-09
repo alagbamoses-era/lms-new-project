@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import axiosService from "./Axios";
-import authSlice from "../store/slices/auth";
+import {setAuthTokens, setAccount} from "../store/slices/auth";
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -28,17 +28,18 @@ const LoginForm = () => {
 
     try {
       const { data } = await axiosService.post("/auth/login/", values);
+      console.log("Login successful:", data);
 
       dispatch(
-        authSlice.actions.setAuthTokens({
+        setAuthTokens({
           token: data.access,
           refreshToken: data.refresh,
         })
       );
 
-      dispatch(authSlice.actions.setAccount(data.user));
+      dispatch(setAccount(data.user));
 
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       setMessage(error.response?.data?.detail || "Unable to login.");
     } finally {

@@ -14,6 +14,7 @@ import Create from "./Pages/Create";
 import CreateCourses from "./Pages/CreateCourses";
 import ManageCourses from "./Pages/ManageCourses";
 import ManageUsers from "./Pages/ManageUsers";
+import Courses from "./Pages/Courses";
 
 import "./App.css";
 
@@ -24,6 +25,7 @@ const routes = [
   { path: "/about", element: <About /> },
   { path: "/service", element: <Service /> },
   { path: "/contact", element: <Contact /> },
+  { path: "/courses", element: <Courses /> },
   { path: "/create-new-user", element: <Create /> },
   { path: "/manage-user-account", element: <ManageUsers /> },
   { path: "/create-new-courses", element: <CreateCourses /> },
