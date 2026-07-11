@@ -1,10 +1,15 @@
-import TextField from '@mui/material/TextField';
+import TextField from "@mui/material/TextField";
 
-export default function TextForm({label}) {
+const TextForm = ({ label, value, onChange, type = "text" }) => {
   return (
-      <TextField id="standard-basic" 
-      sx = {{width: '100%'}}
-      label= {label}
-      variant="outlined" />
+    <TextField
+      fullWidth
+      label={label}
+      value={value}
+      onChange={onChange}
+      type={type}
+    />
   );
-}
+};
+
+export default TextForm;

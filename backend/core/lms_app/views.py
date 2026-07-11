@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets, filters, permissions
+from rest_framework import viewsets, filters, permissions, status
 from .models import *   
 from .Serializer import *
 from rest_framework.response import Response
@@ -15,7 +15,7 @@ def home(request):
     return HttpResponse("Welcome to the LMS API")
 
 class UserViewSet(viewsets.ModelViewSet):
-    http_method_names = ['get']
+    http_method_names = ['get', 'post']
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated,)
     filter_backends = [filters.OrderingFilter]
@@ -33,6 +33,11 @@ class UserViewSet(viewsets.ModelViewSet):
         self.check_object_permissions(self.request, obj)
 
         return obj
+
+   
+    
+    
+    
 
 
 class CoursesViewSet(viewsets.ModelViewSet):

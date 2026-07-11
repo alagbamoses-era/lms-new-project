@@ -12,13 +12,15 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = [
+        fields = (
             "id",
             "username",
             "email",
             "password",
-            "is_active",
-        ]
+            "role",
+            "gender",
+            "programme",
+        )
 
     def create(self, validated_data):
         password = validated_data.pop("password")
