@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "../css/Contact.css";
+import AxiosInstance from "../Components/Axios";
 
 function Contact() {
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -9,61 +11,182 @@ function Contact() {
     message: "",
   });
 
+
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
   };
 
-  const handleSubmit = (e) => {
+
+
+  const handleSubmit = async (e) => {
+
     e.preventDefault();
 
-    // Display submitted data (replace this with an API call if needed)
-    alert("Message sent successfully!");
+    setLoading(true);
+    setMessage("");
 
-    console.log(formData);
 
-    // Clear the form
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    });
+    try {
+
+      const response = await AxiosInstance.post(
+        "contact/",
+        formData
+      );
+
+
+      console.log(
+        "Contact response:",
+        response.data
+      );
+
+
+      setMessage(
+        "Message sent successfully!"
+      );
+
+
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+
+
+    } catch (error) {
+
+
+      console.error(
+        "Contact error:",
+        error.response?.data || error.message
+      );
+
+
+      setMessage(
+        error.response?.data?.detail ||
+        "Unable to send message. Please try again."
+      );
+
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
   };
 
+
+
   return (
+
     <div className="contact-container">
+
+
       <div className="contact-header">
-        <h1>Contact Us</h1>
-        <p>We'd love to hear from you. Send us a message!</p>
+
+        <h1>
+          Contact Us
+        </h1>
+
+        <p>
+          We'd love to hear from you. Send us a message!
+        </p>
+
       </div>
 
+
+
+
       <div className="contact-content">
+
+
         <div className="contact-info">
-          <h2>Get In Touch</h2>
+
+          <h2>
+            Get In Touch
+          </h2>
+
 
           <div className="info-box">
-            <h3>📍 Address</h3>
-            <p>Newcastle-Under-Lyme</p>
+
+            <h3>
+              📍 Address
+            </h3>
+
+            <p>
+              Newcastle-Under-Lyme
+            </p>
+
           </div>
 
-          <div className="info-box">
-            <h3>📞 Phone</h3>
-            <p>XXXXXXXXXXXXXX</p>
-          </div>
+
 
           <div className="info-box">
-            <h3>📧 Email</h3>
-            <p>mosesalagba22@gmail.com</p>
+
+            <h3>
+              📞 Phone
+            </h3>
+
+            <p>
+              XXXXXXXXXXXXXX
+            </p>
+
           </div>
+
+
+
+          <div className="info-box">
+
+            <h3>
+              📧 Email
+            </h3>
+
+            <p>
+              mosesalagba22@gmail.com
+            </p>
+
+          </div>
+
+
         </div>
 
+
+
+
+
         <div className="contact-form">
-          <h2>Send a Message</h2>
+
+
+          <h2>
+            Send a Message
+          </h2>
+
+
+
+          {message && (
+            <p className="contact-message">
+              {message}
+            </p>
+          )}
+
+
+
 
           <form onSubmit={handleSubmit}>
+
+
             <input
               type="text"
               name="name"
@@ -72,6 +195,8 @@ function Contact() {
               onChange={handleChange}
               required
             />
+
+
 
             <input
               type="email"
@@ -82,6 +207,8 @@ function Contact() {
               required
             />
 
+
+
             <input
               type="text"
               name="subject"
@@ -91,6 +218,8 @@ function Contact() {
               required
             />
 
+
+
             <textarea
               name="message"
               rows="6"
@@ -98,16 +227,37 @@ function Contact() {
               value={formData.message}
               onChange={handleChange}
               required
-            ></textarea>
+            />
 
-            <button type="submit" className="submit-btn">
-              Send Message
+
+
+            <button
+              type="submit"
+              className="submit-btn"
+              disabled={loading}
+            >
+
+              {loading
+                ? "Sending..."
+                : "Send Message"
+              }
+
             </button>
+
+
           </form>
+
+
         </div>
+
+
       </div>
+
+
     </div>
+
   );
 }
+
 
 export default Contact;

@@ -3,6 +3,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from core.lms_app.models import *
 from .models import *
 from django.contrib.auth import get_user_model
+from .models import Contact
 
 User = get_user_model()
 
@@ -71,3 +72,9 @@ class LoginSerializer(TokenObtainPairSerializer):
         }
 
         return data
+    
+class ContactSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Contact
+        fields = "__all__"

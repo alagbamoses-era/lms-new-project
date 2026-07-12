@@ -1,8 +1,10 @@
 import React from "react";
 import "../css/About.css";
+import Home from './Home'
 
 const About = () => {
   return (
+    <>
     <div className="about-container">
       <section className="hero">
         <h1>About Us</h1>
@@ -41,6 +43,7 @@ const About = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 

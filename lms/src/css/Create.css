@@ -8,14 +8,16 @@
 }
 
 .FormBox {
-    background-color: white;
-    width: 100%;
-    min-height: 100px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
+        width: 90%;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+
+   
 }
 
 .FormArea {

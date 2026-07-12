@@ -7,6 +7,10 @@ from rest_framework.permissions import IsAuthenticated
 from django.http import HttpResponse
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .Serializer import LoginSerializer
+from .models import Contact
+from .Serializer import ContactSerializer
+from rest_framework.permissions import AllowAny
+
 
 
 # Create your views here.
@@ -33,11 +37,6 @@ class UserViewSet(viewsets.ModelViewSet):
         self.check_object_permissions(self.request, obj)
 
         return obj
-
-   
-    
-    
-    
 
 
 class CoursesViewSet(viewsets.ModelViewSet):
@@ -85,3 +84,9 @@ class ProgrammesViewSet(viewsets.ModelViewSet):
 
 class LoginView(TokenObtainPairView):
     serializer_class = LoginSerializer
+
+
+class ContactViewSet(viewsets.ModelViewSet):
+
+    queryset = Contact.objects.all()
+    serializer_class = ContactSerializer

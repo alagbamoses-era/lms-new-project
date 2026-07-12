@@ -5,6 +5,7 @@ from core.lms_app.views import (
     RolesViewSet,
     GendersViewSet,
     ProgrammesViewSet,
+    ContactViewSet,
 )
 
 router = DefaultRouter()
@@ -14,5 +15,6 @@ router.register(r'courses', CoursesViewSet, basename='courses')
 router.register(r'roles', RolesViewSet, basename='roles')
 router.register(r'genders', GendersViewSet, basename='genders')
 router.register(r'programmes', ProgrammesViewSet, basename='programmes')
+router.register("contact", ContactViewSet)
 
 urlpatterns = router.urls

@@ -2,14 +2,14 @@ import React from 'react';
 import Sidebar from '../Components/Sidebar';
 import '../css/Sidebar.css';
 import NavBar from '../Components/NavBar';
-import LoginForm from '../Components/LoginForm';
+import StudentWelcome from '../Components/StudentWelcome';
 
 function Home() {
   return (
     <div>
       <NavBar />
       <Sidebar />
-      <LoginForm />
+      <StudentWelcome />
     </div>
   );
 }

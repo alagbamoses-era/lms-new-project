@@ -16,13 +16,9 @@ export const SideBarData = [
     {
         title: 'Home',
         icon: <HomeIcon />,
-        link: '/'
+        link: '/home'
     },
-    {
-        title: 'Role',
-        icon: <StarsIcon />,
-        link: '/role'
-    },
+   
 
 
     {

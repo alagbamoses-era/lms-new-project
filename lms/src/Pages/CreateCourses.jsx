@@ -1,11 +1,110 @@
-import React from 'react'
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import axiosService from "../Components/Axios"; 
+import "../css/CreateCourse.css";
 
-function CreateCourses() {
+const CreateCourse = () => {
+  const { user } = useSelector((state) => state.auth);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    category: "",
+    description: "",
+  });
+
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const courseData = {
+    title: formData.title,
+    category: formData.category,
+    description: formData.description,
+    instructor_email: user?.email,
+  };
+
+  try {
+    const { data } = await axiosService.post("/courses/", courseData);
+
+    console.log("Course Created:", data);
+
+    alert("Course created successfully!");
+
+    setFormData({
+      title: "",
+      category: "",
+      description: "",
+    });
+  } catch (error) {
+    console.error(error.response?.data || error.message);
+    alert("Failed to create course.");
+  }
+};
+
   return (
-    <div>
-      Create Courses
-    </div>
-  )
-}
+    <div className="course-container">
+      <div className="course-card">
+        <h2>Create New Course</h2>
 
-export default CreateCourses
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Instructor Email</label>
+            <input
+              type="email"
+              value={user?.email || ""}
+              readOnly
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Course Title</label>
+            <input
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              placeholder="Enter course title"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Category</label>
+            <input
+              type="text"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              placeholder="Enter course category"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Description</label>
+            <textarea
+              name="description"
+              rows="5"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Enter course description"
+              required
+            />
+          </div>
+
+          <button type="submit">Create Course</button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default CreateCourse;

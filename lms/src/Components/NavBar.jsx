@@ -2,20 +2,21 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import useSWR from "swr";
+import { setLogout } from "../store/slices/auth";
 
 import "../css/NavBar.css";
 import authSlice from "../store/slices/auth";
 import { fetcher } from "./Axios";
 
 const links = [
-  { path: "/", label: "Home" },
+
   { path: "/about", label: "About" },
-  { path: "/service", label: "Service" },
   { path: "/contact", label: "Contact" },
 ];
 
 function NavBar() {
   const [clicked, setClicked] = useState(false);
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,12 +29,13 @@ function NavBar() {
     setClicked((prev) => !prev);
   };
 
-  const handleLogout = () => {
-    dispatch(authSlice.actions.setLogout());
-    navigate("/login");
-  };
+ const handleLogout = () => {
+  dispatch(setLogout());
+  navigate("/login", { replace: true });
+};
 
   return (
+    <div className="navbar-container">
     <nav>
       <div className="logo">
         <svg
@@ -82,6 +84,7 @@ function NavBar() {
         />
       </div>
     </nav>
+    </div>
   );
 }
 
