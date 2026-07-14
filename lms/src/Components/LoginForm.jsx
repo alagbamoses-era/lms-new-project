@@ -112,12 +112,24 @@ const LoginForm = () => {
             </div>
           )}
 
-          <button
-            type="submit"
-            disabled={loading || !formik.isValid || !formik.dirty}
-          >
-            {loading ? "Signing in..." : "Login"}
-          </button>
+          <div className="button-group">
+            <button
+              type="submit"
+              disabled={loading || !formik.isValid || !formik.dirty}
+            >
+              {loading ? "Signing in..." : "Login"}
+            </button>
+
+            <button
+              type="button"
+              className="register-btn"
+              onClick={() => navigate("/register")}
+            >
+              Register
+            </button>
+          </div>
+
+
         </div>
       </form>
     </div>
