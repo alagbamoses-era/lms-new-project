@@ -38,13 +38,10 @@ const LoginForm = () => {
       setErrorMessage("");
 
       try {
-        const payload = {
+        const { data } = await axiosService.post("/auth/login/", {
           email: values.email.trim(),
           password: values.password,
-        };
-
-        const { data } = await axiosService.post("/auth/login/", payload);
-        console.log("Here is the data", data)
+        });
 
         dispatch(
           setLogin({
@@ -56,15 +53,10 @@ const LoginForm = () => {
 
         navigate("/home", { replace: true });
       } catch (error) {
-        if (error.response) {
-          setErrorMessage(
-            error.response.data?.detail || "Invalid email or password."
-          );
-        } else {
-          setErrorMessage(
+        setErrorMessage(
+          error.response?.data?.detail ||
             "Unable to connect to the server. Please try again later."
-          );
-        }
+        );
       } finally {
         setLoading(false);
       }
@@ -73,7 +65,11 @@ const LoginForm = () => {
 
   return (
     <div className="container">
-      <form className="form-container" onSubmit={formik.handleSubmit} noValidate>
+      <form
+        className="form-container"
+        onSubmit={formik.handleSubmit}
+        noValidate
+      >
         <div className="form">
           <h2>Learning Management System</h2>
           <p>Please sign in to continue.</p>
@@ -86,9 +82,7 @@ const LoginForm = () => {
               {...formik.getFieldProps("email")}
             />
             {formik.touched.email && formik.errors.email && (
-              <div className="error" role="alert">
-                {formik.errors.email}
-              </div>
+              <div className="error">{formik.errors.email}</div>
             )}
           </div>
 
@@ -100,17 +94,11 @@ const LoginForm = () => {
               {...formik.getFieldProps("password")}
             />
             {formik.touched.password && formik.errors.password && (
-              <div className="error" role="alert">
-                {formik.errors.password}
-              </div>
+              <div className="error">{formik.errors.password}</div>
             )}
           </div>
 
-          {errorMessage && (
-            <div className="error" role="alert">
-              {errorMessage}
-            </div>
-          )}
+          {errorMessage && <div className="error">{errorMessage}</div>}
 
           <div className="button-group">
             <button
@@ -128,8 +116,6 @@ const LoginForm = () => {
               Register
             </button>
           </div>
-
-
         </div>
       </form>
     </div>

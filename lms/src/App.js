@@ -1,4 +1,3 @@
-import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Provider, useSelector } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -6,6 +5,8 @@ import { PersistGate } from "redux-persist/integration/react";
 import store, { persistor } from "./store";
 
 import LoginForm from "./Components/LoginForm";
+import RegisterForm from "./Components/RegisterForm";
+
 import Home from "./Pages/Home";
 import About from "./Pages/About";
 import Service from "./Pages/Service";
@@ -17,121 +18,154 @@ import ManageUsers from "./Pages/ManageUsers";
 import Courses from "./Pages/Courses";
 
 import "./App.css";
-import EditUser from "./Pages/ManageUsers";
+
 
 function ProtectedRoute({ children }) {
-  const isAuthenticated = useSelector(
-    (state) => state.auth?.isAuthenticated
-  );
+  const isAuthenticated =
+    useSelector((state) => state.auth?.isAuthenticated) ?? false;
 
-  return isAuthenticated ? children : <Navigate to="/login" replace />;
+  return isAuthenticated ? (
+    children
+  ) : (
+    <Navigate to="/login" replace />
+  );
 }
+
+
+function PublicRoute({ children }) {
+  const isAuthenticated =
+    useSelector((state) => state.auth?.isAuthenticated) ?? false;
+
+  return isAuthenticated ? (
+    <Navigate to="/home" replace />
+  ) : (
+    children
+  );
+}
+
+
+const protectedRoutes = [
+  {
+    path: "/home",
+    element: <Home />,
+  },
+  {
+    path: "/about",
+    element: <About />,
+  },
+  {
+    path: "/service",
+    element: <Service />,
+  },
+  {
+    path: "/contact",
+    element: <Contact />,
+  },
+  {
+    path: "/courses",
+    element: <Courses />,
+  },
+  {
+    path: "/create-new-user",
+    element: <Create />,
+  },
+  {
+    path: "/manage-user-account",
+    element: <ManageUsers />,
+  },
+  {
+    path: "/create-new-courses",
+    element: <CreateCourses />,
+  },
+  {
+    path: "/manage-courses",
+    element: <ManageCourses />,
+  },
+];
+
 
 function AppRoutes() {
   return (
     <Routes>
-      {/* Default route */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
 
-      {/* Public route */}
-      <Route path="/login" element={<LoginForm />} />
-
-      {/* Protected routes */}
+      {/* Public Routes */}
       <Route
-        path="/home"
+        path="/login"
         element={
-          <ProtectedRoute>
-            <Home />
-          </ProtectedRoute>
+          <PublicRoute>
+            <LoginForm />
+          </PublicRoute>
         }
       />
 
       <Route
-        path="/about"
+        path="/register"
         element={
-          <ProtectedRoute>
-            <About />
-          </ProtectedRoute>
+          <PublicRoute>
+            <RegisterForm />
+          </PublicRoute>
         }
       />
 
+
+      {/* Default Route */}
       <Route
-        path="/service"
+        path="/"
         element={
-          <ProtectedRoute>
-            <Service />
-          </ProtectedRoute>
+          <Navigate
+            to="/login"
+            replace
+          />
         }
       />
 
+
+      {/* Protected Routes */}
+      {protectedRoutes.map((route) => (
+        <Route
+          key={route.path}
+          path={route.path}
+          element={
+            <ProtectedRoute>
+              {route.element}
+            </ProtectedRoute>
+          }
+        />
+      ))}
+
+
+      {/* Unknown Route */}
       <Route
-        path="/contact"
+        path="*"
         element={
-          <ProtectedRoute>
-            <Contact />
-          </ProtectedRoute>
+          <Navigate
+            to="/login"
+            replace
+          />
         }
       />
 
-      <Route
-        path="/courses"
-        element={
-          <ProtectedRoute>
-            <Courses />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/create-new-user"
-        element={
-          <ProtectedRoute>
-            <Create />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/manage-user-account"
-        element={
-          <ProtectedRoute>
-            <EditUser />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/create-new-courses"
-        element={
-          <ProtectedRoute>
-            <CreateCourses />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/manage-courses"
-        element={
-          <ProtectedRoute>
-            <ManageCourses />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* Catch all unknown routes */}
-      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 }
 
+
 function App() {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate
+        loading={
+          <div className="loading">
+            Loading application...
+          </div>
+        }
+        persistor={persistor}
+      >
         <AppRoutes />
       </PersistGate>
     </Provider>
   );
 }
+
 
 export default App;
