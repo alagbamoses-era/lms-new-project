@@ -5,7 +5,7 @@ import authSlice from "../store/slices/auth";
 
 
 const API_URL =
-  process.env.REACT_APP_API_URL || "http://localhost:8000/api";
+  process.env.REACT_APP_API_URL || "https://lms-new-project-902l.onrender.com/api";
 
 
 const axiosService = axios.create({

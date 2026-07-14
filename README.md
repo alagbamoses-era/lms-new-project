@@ -199,7 +199,7 @@ python manage.py runserver
 
 Backend will run on:
 
-http://localhost:8000
+https://lms-new-project-902l.onrender.com
 Frontend Setup
 
 Open another terminal:
