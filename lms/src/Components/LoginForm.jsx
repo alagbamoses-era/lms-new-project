@@ -44,6 +44,7 @@ const LoginForm = () => {
         };
 
         const { data } = await axiosService.post("/auth/login/", payload);
+        console.log("Here is the data", data)
 
         dispatch(
           setLogin({

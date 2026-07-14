@@ -5,11 +5,32 @@ from .models import *
 from django.contrib.auth import get_user_model
 from .models import Contact
 
+
 User = get_user_model()
+
+class RolesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Roles
+        fields = '__all__'  
+        read_only_field = ['is_active', 'created', 'updated']
+
+class GendersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Genders
+        fields = '__all__'  
+        read_only_field = ['is_active', 'created', 'updated']
+class ProgrammesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Programmes
+        fields = '__all__'  
+        read_only_field = ['is_active', 'created', 'updated']
 
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
+    role = RolesSerializer(read_only = True)
+    gender = GendersSerializer(read_only = True)
+    programme = ProgrammesSerializer(read_only = True) 
 
     class Meta:
         model = User
@@ -39,22 +60,6 @@ class CoursesSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_field = ['is_active', 'created', 'updated']
 
-class RolesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Roles
-        fields = '__all__'  
-        read_only_field = ['is_active', 'created', 'updated']
-
-class GendersSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Genders
-        fields = '__all__'  
-        read_only_field = ['is_active', 'created', 'updated']
-class ProgrammesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Programmes
-        fields = '__all__'  
-        read_only_field = ['is_active', 'created', 'updated']
 
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -69,6 +74,9 @@ class LoginSerializer(TokenObtainPairSerializer):
             "id": self.user.id,
             "username": self.user.username,
             "email": self.user.email,
+            "role": self.user.role,
+            "gender": self.user.gender,
+            "programme": self.user.programme
         }
 
         return data

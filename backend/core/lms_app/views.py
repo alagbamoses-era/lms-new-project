@@ -20,6 +20,7 @@ def home(request):
 
 class UserViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post']
+    queryset = User.objects.select_related('role', 'gender', 'programme')
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated,)
     filter_backends = [filters.OrderingFilter]

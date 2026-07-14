@@ -21,7 +21,7 @@ const StudentWelcome = () => {
 
 
         <div className="student-info">
-          <h3>Student Information</h3>
+          <h3>Personal Information</h3>
 
           <p>
             <strong>Name:</strong>{" "}

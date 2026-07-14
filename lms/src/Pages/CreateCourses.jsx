@@ -5,11 +5,13 @@ import "../css/CreateCourse.css";
 
 const CreateCourse = () => {
   const { user } = useSelector((state) => state.auth);
+  console.log("This is the user",user)
 
   const [formData, setFormData] = useState({
     title: "",
     category: "",
     description: "",
+    user_id: "",
   });
 
   const handleChange = ({ target }) => {
@@ -28,7 +30,7 @@ const CreateCourse = () => {
     title: formData.title,
     category: formData.category,
     description: formData.description,
-    instructor_email: user?.email,
+    user: user.id
   };
 
   try {
@@ -56,10 +58,10 @@ const CreateCourse = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Instructor Email</label>
+            <label>Teacher</label>
             <input
               type="email"
-              value={user?.email || ""}
+              value={user.id || ""}
               readOnly
             />
           </div>
