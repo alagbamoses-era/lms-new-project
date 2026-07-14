@@ -1,3 +1,5 @@
+#!/bin/sh
+
 set -o errexit #exit on error
 
 pip install -r requirements.txt
