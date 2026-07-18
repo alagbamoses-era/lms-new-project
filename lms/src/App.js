@@ -9,7 +9,6 @@ import RegisterForm from "./Components/RegisterForm";
 
 import Home from "./Pages/Home";
 import About from "./Pages/About";
-import Service from "./Pages/Service";
 import Contact from "./Pages/Contact";
 import Create from "./Pages/Create";
 import CreateCourses from "./Pages/CreateCourses";
@@ -19,76 +18,39 @@ import Courses from "./Pages/Courses";
 
 import "./App.css";
 
-
 function ProtectedRoute({ children }) {
   const isAuthenticated =
     useSelector((state) => state.auth?.isAuthenticated) ?? false;
 
-  return isAuthenticated ? (
-    children
-  ) : (
-    <Navigate to="/login" replace />
-  );
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 }
-
 
 function PublicRoute({ children }) {
   const isAuthenticated =
     useSelector((state) => state.auth?.isAuthenticated) ?? false;
 
-  return isAuthenticated ? (
-    <Navigate to="/home" replace />
-  ) : (
-    children
-  );
+  return isAuthenticated ? <Navigate to="/home" replace /> : children;
 }
 
-
 const protectedRoutes = [
-  {
-    path: "/home",
-    element: <Home />,
-  },
-  {
-    path: "/about",
-    element: <About />,
-  },
-  {
-    path: "/service",
-    element: <Service />,
-  },
-  {
-    path: "/contact",
-    element: <Contact />,
-  },
-  {
-    path: "/courses",
-    element: <Courses />,
-  },
-  {
-    path: "/create-new-user",
-    element: <Create />,
-  },
-  {
-    path: "/manage-user-account",
-    element: <ManageUsers />,
-  },
-  {
-    path: "/create-new-courses",
-    element: <CreateCourses />,
-  },
-  {
-    path: "/manage-courses",
-    element: <ManageCourses />,
-  },
+  { path: "/home", element: <Home /> },
+  { path: "/about", element: <About /> },
+  { path: "/contact", element: <Contact /> },
+  { path: "/courses", element: <Courses /> },
+  { path: "/create-new-user", element: <Create /> },
+  { path: "/manage-user-account", element: <ManageUsers /> },
+  { path: "/create-new-courses", element: <CreateCourses /> },
+  { path: "/manage-courses", element: <ManageCourses /> },
 ];
-
 
 function AppRoutes() {
   return (
     <Routes>
 
-      {/* Public Routes */}
+      {/* Default Route */}
+      <Route path="/" element={<Navigate to="/login" replace />} />
+
+      {/* Login Page */}
       <Route
         path="/login"
         element={
@@ -98,6 +60,7 @@ function AppRoutes() {
         }
       />
 
+      {/* Register Page */}
       <Route
         path="/register"
         element={
@@ -106,19 +69,6 @@ function AppRoutes() {
           </PublicRoute>
         }
       />
-
-
-      {/* Default Route */}
-      <Route
-        path="/"
-        element={
-          <Navigate
-            to="/login"
-            replace
-          />
-        }
-      />
-
 
       {/* Protected Routes */}
       {protectedRoutes.map((route) => (
@@ -133,39 +83,24 @@ function AppRoutes() {
         />
       ))}
 
-
-      {/* Unknown Route */}
-      <Route
-        path="*"
-        element={
-          <Navigate
-            to="/login"
-            replace
-          />
-        }
-      />
+      {/* Unknown Routes */}
+      <Route path="*" element={<Navigate to="/login" replace />} />
 
     </Routes>
   );
 }
 
-
 function App() {
   return (
     <Provider store={store}>
       <PersistGate
-        loading={
-          <div className="loading">
-            Loading application...
-          </div>
-        }
         persistor={persistor}
+        loading={<div className="loading">Loading application...</div>}
       >
         <AppRoutes />
       </PersistGate>
     </Provider>
   );
 }
-
 
 export default App;
