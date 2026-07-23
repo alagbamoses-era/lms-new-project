@@ -1,12 +1,11 @@
 import React from 'react'
 import { useEffect, useState } from "react";
 import '../css/Courses.css'
-import AxiosInstance from 'axios'
+import AxiosInstance from "../Components/Axios";
 
 
 
   function Courses() {
-  
 
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(true);
@@ -14,7 +13,7 @@ import AxiosInstance from 'axios'
   
 
     useEffect(() => {
-        const fetchUsers = async () => {
+        const fetchCourses = async () => {
             try {
                 const response = await AxiosInstance.get("/courses/");
                 setCourses(response.data);
@@ -25,7 +24,7 @@ import AxiosInstance from 'axios'
             }
         };
 
-        fetchUsers();
+        fetchCourses();
     }, []);
 
     if (loading) {
@@ -45,12 +44,14 @@ import AxiosInstance from 'axios'
        <section className="about-content">
 
         <div className="about-card">
-          <div className="EditFormBox">
+          
             <h1>Courses</h1>
            
             <ul className="edit-user">
+              
 
             {courses.map((course) => (
+              
                 <li key={course.id}>
                     <span>{course.title}</span>
                 </li>
@@ -59,7 +60,7 @@ import AxiosInstance from 'axios'
             </ul>
       
         </div>
-        </div>
+    
        </section>
     </div>
   );

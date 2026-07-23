@@ -12,7 +12,7 @@ function ManageUsers() {
   // Pass userToEdit as a prop to the EditUser component (don#t need the ID from useParams and don#t need to fetch data in that component)
   // setFormData from userToEdit e.g. username = userToEdit.username
   const [showEditForm, setShowEditForm] = useState(false);
-  const [userToEdit, setUserToEdit] = useState({});
+  const [courseToEdit, setCourseToEdit] = useState({});
   const [courses, setCourses] = useState([])
 
 
@@ -51,13 +51,15 @@ function ManageUsers() {
             {courses.map((course) => (
                 <li key={course.id}>
                     <span>{course.title}</span>
-                    <button ButtonArea onClick={setShowEditForm && setUserToEdit}>Edit</button>
+                    <button ButtonArea onClick={() => {setShowEditForm(true); setCourseToEdit(course)}}>Edit</button>
                 
                 </li>
             ))}
 
             </ul>
-            <EditCourses />
+            {showEditForm && <EditCourses courseToEdit={courseToEdit}/> }
+
+            
         </div>
     );
 }

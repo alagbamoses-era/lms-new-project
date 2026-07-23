@@ -20,7 +20,8 @@ function ManageUsers() {
     const clickForm = () => {
         setShowEditForm(c => c === false ? true : false)
     }
-   
+   console.log("user to edit", userToEdit)
+    console.log("user to edit", userToEdit.username)
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -50,13 +51,14 @@ function ManageUsers() {
             {users.map((user) => (
                 <li key={user.id}>
                     <span>{user.username}</span> | <span>{user.email}</span>
-                    <button ButtonArea onClick={setShowEditForm && setUserToEdit}>Edit</button>
+                    <button ButtonArea onClick={() => {setShowEditForm(true); setUserToEdit(user)}}>Edit</button>
                 
                 </li>
             ))}
 
             </ul>
-            <EditUser />
+            {showEditForm && <EditUser  userToEdit={userToEdit} /> }
+    
         </div>
     );
 }

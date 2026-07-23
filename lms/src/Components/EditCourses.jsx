@@ -13,84 +13,24 @@ import SelectForm from "./forms/SelectForm";
 import "../css/EditUser.css";
 
 
-const EditCourses = (courseToEdit) => {
+const EditCourses = ({courseToEdit}) => {
 
-  const { id } = useParams();
+  
   const navigate = useNavigate();
 
   const [courses, setCourses] = useState([]);
 
 
-  const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState("");
 
   const [courseData, setCourseData] = useState({
-    title: "",
-    category: "",
-    description: "",
+    title: courseToEdit.title ?? "",
+    category: courseToEdit.category ?? "",
+    description: courseToEdit.description ?? "",
    
   });
 
-
-  useEffect(() => {
-    fetchData();
-  }, [id]);
-
-
-  const fetchData = async () => {
-
-    try {
-
-      setLoading(true);
-
-      const [
-        coursesResponse,
-      
-      ] = await Promise.all([
-
-        AxiosInstance.get(`courses/${id}/`),
-
-
-      ]);
-
-
-      const courses = coursesResponse.data;
-      console.log(courses)
-
-
-      setCourseData({
-
-        title: courses.title || "",
-
-        category: courses.category || "",
-
-        description: courses.description || "",
-
-
-      });
-
-
-      setCourses(coursesResponse.data);
-
-     
-
-
-    } catch (err) {
-
-      console.error(
-        "Loading user failed:",
-        err.response?.data || err.message
-      );
-
-      setError("Unable to load course information.");
-
-    } finally {
-
-      setLoading(false);
-
-    }
-
-  };
 
 
   const handleChange = (field, value) => {
@@ -120,14 +60,14 @@ const EditCourses = (courseToEdit) => {
 
 
       await AxiosInstance.put(
-        `users/${id}/`,
+        `courses/${courseToEdit.id}/`,
         courseToSend
       );
 
 
       alert("User updated successfully!");
 
-      navigate("/manage-user-account");
+      navigate("/manage-courses");
 
 
     } catch (err) {
@@ -144,17 +84,7 @@ const EditCourses = (courseToEdit) => {
   };
 
 
-  if (loading) {
-
-    return (
-      <Box className="EditPage">
-        <Typography>
-          Loading user details...
-        </Typography>
-      </Box>
-    );
-
-  }
+  
 
 
   return (
@@ -231,7 +161,7 @@ const EditCourses = (courseToEdit) => {
 
             />
             </Box>
-            
+
             <Button
 
               type="submit"

@@ -13,101 +13,32 @@ import SelectForm from "../Components/forms/SelectForm";
 import "../css/EditUser.css";
 
 
-const EditUser = (userToEdit) => {
+const EditUser = ({userToEdit}) => {
 
-  const { id } = useParams();
+
   const navigate = useNavigate();
 
   const [roles, setRoles] = useState([]);
   const [genders, setGenders] = useState([]);
   const [programmes, setProgrammes] = useState([]);
 
-  const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState("");
 
+  console.log("User info", userToEdit)
+  console.log("User info", userToEdit.username)
+
   const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    role: "",
-    gender: "",
-    programme: "",
+    username: userToEdit.username ?? "No user name" ,
+    email: userToEdit.email ?? "",
+    password: userToEdit.password ?? "",
+    role: userToEdit.role ?? "",
+    gender: userToEdit.gender ?? "",
+    programme: userToEdit.programme ?? "",
   });
 
 
-  useEffect(() => {
-    fetchData();
-  }, [id]);
-
-
-  const fetchData = async () => {
-
-    try {
-
-      setLoading(true);
-
-      const [
-        userResponse,
-        rolesResponse,
-        gendersResponse,
-        programmesResponse
-      ] = await Promise.all([
-
-        AxiosInstance.get(`users/${id}/`),
-
-        AxiosInstance.get("roles/"),
-
-        AxiosInstance.get("genders/"),
-
-        AxiosInstance.get("programmes/"),
-
-      ]);
-
-
-      const user = userResponse.data;
-      console.log(user)
-
-
-      setFormData({
-
-        username: user.username || "",
-
-        email: user.email || "",
-
-        password: "",
-
-        role: user.role || "",
-
-        gender: user.gender || "",
-
-        programme: user.programme || "",
-
-      });
-
-
-      setRoles(rolesResponse.data);
-
-      setGenders(gendersResponse.data);
-
-      setProgrammes(programmesResponse.data);
-
-
-    } catch (err) {
-
-      console.error(
-        "Loading user failed:",
-        err.response?.data || err.message
-      );
-
-      setError("Unable to load user information.");
-
-    } finally {
-
-      setLoading(false);
-
-    }
-
-  };
+ 
 
 
   const handleChange = (field, value) => {
@@ -145,7 +76,7 @@ const EditUser = (userToEdit) => {
 
 
       await AxiosInstance.put(
-        `users/${id}/`,
+        `users/${userToEdit.id}/`,
         dataToSend
       );
 
@@ -169,19 +100,7 @@ const EditUser = (userToEdit) => {
   };
 
 
-  if (loading) {
-
-    return (
-      <Box className="EditPage">
-        <Typography>
-          Loading user details...
-        </Typography>
-      </Box>
-    );
-
-  }
-
-
+ 
   return (
 
     <Box className="EditPage">
