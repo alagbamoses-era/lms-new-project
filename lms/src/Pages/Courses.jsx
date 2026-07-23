@@ -1,7 +1,37 @@
 import React from 'react'
+import { useEffect, useState } from "react";
 import '../css/Courses.css'
+import AxiosInstance from 'axios'
 
-function Courses() {
+
+
+  function Courses() {
+  
+
+  const [courses, setCourses] = useState([])
+  const [loading, setLoading] = useState(true);
+
+  
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await AxiosInstance.get("/courses/");
+                setCourses(response.data);
+            } catch (error) {
+                console.error("Error fetching courses:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUsers();
+    }, []);
+
+    if (loading) {
+        return <h2>Loading...</h2>;
+    }
+
   return (
     <div className="about-container">
       <section className="hero">
@@ -12,20 +42,25 @@ function Courses() {
           help businesses grow and succeed in today's competitive world.
         </p>
       </section>
-
-      <section className="about-content">
+       <section className="about-content">
 
         <div className="about-card">
-          <h2>Why Choose Us?</h2>
-          <ul>
-            <li>✔ Project Management</li>
-            <li>✔ Business Analysis</li>
-            <li>✔ Software Development</li>
-            <li>✔ Machine Learning</li>
-            <li>✔ Data Analysis</li>
-          </ul>
+          <div className="EditFormBox">
+            <h1>Courses</h1>
+           
+            <ul className="edit-user">
+
+            {courses.map((course) => (
+                <li key={course.id}>
+                    <span>{course.title}</span>
+                </li>
+            ))}
+
+            </ul>
+      
         </div>
-      </section>
+        </div>
+       </section>
     </div>
   );
 };

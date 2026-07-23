@@ -50,9 +50,6 @@ axiosService.interceptors.request.use(
 );
 
 
-
-
-
 // Refresh expired access token
 const refreshAuthLogic = async (
   failedRequest

@@ -3,8 +3,8 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from core.lms_app.models import *
 from .models import *
 from django.contrib.auth import get_user_model
-from .models import Contact
 from django.contrib.auth.password_validation import validate_password
+
 
 
 User = get_user_model()
@@ -63,7 +63,6 @@ class CoursesSerializer(serializers.ModelSerializer):
 
 
 
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class LoginSerializer(TokenObtainPairSerializer):

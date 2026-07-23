@@ -43,11 +43,7 @@ class RegisterView(generics.CreateAPIView):
 
 class UserViewSet(viewsets.ModelViewSet):
 
-    queryset = User.objects.select_related(
-        "role",
-        "gender",
-        "programme",
-    )
+    queryset = User.objects.all()
 
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
